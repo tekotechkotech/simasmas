@@ -38,11 +38,20 @@ Route::middleware('auth')->group(function () {
             ->take(5)
             ->get();
 
-        return view('dashboard', compact('totalKas', 'kegiatanBulanIni', 'kegiatanTerdekat', 'transaksiTerakhir'));
+        $totalJamaah = \App\Models\Jamaah::where('masjid_id', $masjidId)->count();
+        $jamaahBaruMingguIni = \App\Models\Jamaah::where('masjid_id', $masjidId)
+            ->where('created_at', '>=', now()->subDays(7))
+            ->count();
+
+        $totalInventaris = \App\Models\Inventaris::where('masjid_id', $masjidId)->sum('jumlah');
+
+        return view('dashboard', compact('totalKas', 'kegiatanBulanIni', 'kegiatanTerdekat', 'transaksiTerakhir', 'totalJamaah', 'jamaahBaruMingguIni', 'totalInventaris'));
     })->name('dashboard');
 
     Route::resource('keuangan', \App\Http\Controllers\KeuanganController::class);
     Route::resource('kegiatan', \App\Http\Controllers\KegiatanController::class);
+    Route::resource('jamaah', \App\Http\Controllers\JamaahController::class);
+    Route::resource('inventaris', \App\Http\Controllers\InventarisController::class);
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });

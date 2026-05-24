@@ -140,14 +140,15 @@
                             <div>
                                 <p class="text-muted fw-semibold mb-1" style="font-size: 0.875rem;">Total Jamaah Terdaftar
                                 </p>
-                                <h3 class="fw-bold mb-0 text-dark">0</h3>
+                                <h3 class="fw-bold mb-0 text-dark">{{ $totalJamaah }}</h3>
                             </div>
                             <div class="widget-icon-box bg-sky-light text-sky">
                                 <i class="fas fa-users fs-5"></i>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <span class="badge bg-sky-light text-sky rounded-pill"><i class="fas fa-plus me-1"></i>0</span>
+                            <span class="badge bg-sky-light text-sky rounded-pill"><i
+                                    class="fas fa-plus me-1"></i>{{ $jamaahBaruMingguIni }}</span>
                             <span class="text-muted small ms-1">Minggu ini</span>
                         </div>
                     </div>
@@ -161,8 +162,8 @@
                         <div class="d-flex align-items-start justify-content-between">
                             <div>
                                 <p class="text-muted fw-semibold mb-1" style="font-size: 0.875rem;">Aset & Inventaris</p>
-                                <h3 class="fw-bold mb-0 text-dark">0 <span class="fs-6 fw-normal text-muted">Item</span>
-                                </h3>
+                                <h3 class="fw-bold mb-0 text-dark">{{ $totalInventaris }} <span
+                                        class="fs-6 fw-normal text-muted">Item</span></h3>
                             </div>
                             <div class="widget-icon-box bg-amber-light text-amber">
                                 <i class="fas fa-boxes fs-5"></i>
@@ -231,7 +232,8 @@
                                         <h6 class="fw-bold mb-1">{{ $kegiatan->judul }}</h6>
                                         <p class="text-muted small mb-0">
                                             {{ \Carbon\Carbon::parse($kegiatan->tanggal)->format('d M Y') }}
-                                            {{ $kegiatan->waktu ? '| ' . $kegiatan->waktu : '' }}</p>
+                                            {{ $kegiatan->waktu ? '| ' . $kegiatan->waktu : '' }}
+                                        </p>
                                     </div>
                                 @endforeach
                             </div>

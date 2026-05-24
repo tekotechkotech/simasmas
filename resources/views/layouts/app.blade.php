@@ -232,7 +232,8 @@
 
                     @if(auth()->user()->role == 'admin_masjid' || auth()->user()->role == 'super_admin')
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
+                            <a class="nav-link {{ request()->routeIs('jamaah.*') ? 'active' : '' }}"
+                                href="{{ route('jamaah.index') }}">
                                 <i class="fas fa-users"></i> Data Jamaah
                             </a>
                         </li>
@@ -250,7 +251,8 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
+                        <a class="nav-link {{ request()->routeIs('inventaris.*') ? 'active' : '' }}"
+                            href="{{ route('inventaris.index') }}">
                             <i class="fas fa-boxes"></i> Inventaris
                         </a>
                     </li>
@@ -331,7 +333,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sidebar Toggle Logic for Mobile
-        document.addEventListener("DOMContentLoaded", fun ction () {
+        document.addEventListener("DOMContentLoaded", f un ction () {
             const sidebar = document.getElementById('sidebar');
             const sidebarCollapse = document.getElementById('sidebarCollapse');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -342,13 +344,12 @@
                 document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
             }
 
-             if (sidebarCollapse) {
+              if (sidebarCollapse) {
                 sidebarCollapse.addEventListener('click', toggleSidebar);
             }
-             if (sidebarOverlay) {
+              if (sidebarOverlay) {
                 sidebarOverlay.addEventListener('click', toggleSidebar);
-            }
-    });
+            } });
     </script>
     @stack('scripts')
 </body>
