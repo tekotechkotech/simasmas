@@ -16,7 +16,33 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('dashboard', function () {
-        return view('dashboard');
+        $masjidId = auth()->user()->masjid_id;
+
+        $totalKas = \App\Models\Keuangan::where('masjid_id', $masjidId)
+            ->selectRaw('SUM(CASE WHEN jenis = "pemasukan" THEN nominal ELSE -nominal END) as total')
+            ->value('total') ?? 0;
+
+        $kegiatanBulanIni = \App\Models\Kegiatan::where('masjid_id', $masjidId)
+            ->whereMonth('tanggal', date('m'))
+            ->whereYear('tanggal', date('Y'))
+            ->count();
+
+        $kegiatanTerdekat = \App\Models\Kegiatan::where('masjid_id', $masjidId)
+            ->whereDate('tanggal', '>=', date('Y-m-d'))
+            ->orderBy('tanggal', 'asc')
+            ->take(5)
+            ->get();
+
+        $transaksiTerakhir = \App\Models\Keuangan::where('masjid_id', $masjidId)
+            ->orderBy('tanggal', 'desc')
+            ->take(5)
+            ->get();
+
+        return view('dashboard', compact('totalKas', 'kegiatanBulanIni', 'kegiatanTerdekat', 'transaksiTerakhir'));
     })->name('dashboard');
+
+    Route::resource('keuangan', \App\Http\Controllers\KeuanganController::class);
+    Route::resource('kegiatan', \App\Http\Controllers\KegiatanController::class);
+
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });

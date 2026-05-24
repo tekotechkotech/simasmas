@@ -37,4 +37,9 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function masjid()
+    {
+        return $this->belongsTo(Masjid::class);
+    }
 }
