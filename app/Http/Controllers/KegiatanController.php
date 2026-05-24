@@ -10,8 +10,20 @@ class KegiatanController extends Controller
 {
     public function index()
     {
-        $kegiatans = Kegiatan::where('masjid_id', auth()->user()->masjid_id)->get();
-        return view('kegiatan.index', compact('kegiatans'));
+        $masjidId = auth()->user()->masjid_id;
+        $kegiatans = Kegiatan::where('masjid_id', $masjidId)->orderBy('tanggal', 'desc')->get();
+
+        $totalKegiatan = Kegiatan::where('masjid_id', $masjidId)->count();
+
+        $kegiatanMendatang = Kegiatan::where('masjid_id', $masjidId)
+            ->whereDate('tanggal', '>=', date('Y-m-d'))
+            ->count();
+
+        $kegiatanSelesai = Kegiatan::where('masjid_id', $masjidId)
+            ->whereDate('tanggal', '<', date('Y-m-d'))
+            ->count();
+
+        return view('kegiatan.index', compact('kegiatans', 'totalKegiatan', 'kegiatanMendatang', 'kegiatanSelesai'));
     }
 
     public function create()
@@ -35,6 +47,14 @@ class KegiatanController extends Controller
             'lokasi' => $request->lokasi,
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Kegiatan berhasil ditambahkan');
+        return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil ditambahkan');
+    }
+
+    public function destroy(Kegiatan $kegiatan)
+    {
+        if ($kegiatan->masjid_id === auth()->user()->masjid_id) {
+            $kegiatan->delete();
+        }
+        return redirect()->back()->with('success', 'Kegiatan berhasil dihapus');
     }
 }

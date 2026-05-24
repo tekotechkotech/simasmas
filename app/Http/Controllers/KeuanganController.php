@@ -10,8 +10,26 @@ class KeuanganController extends Controller
 {
     public function index()
     {
-        $keuangans = Keuangan::where('masjid_id', auth()->user()->masjid_id)->get();
-        return view('keuangan.index', compact('keuangans'));
+        $masjidId = auth()->user()->masjid_id;
+        $keuangans = Keuangan::where('masjid_id', $masjidId)->orderBy('tanggal', 'desc')->get();
+
+        $totalSaldo = Keuangan::where('masjid_id', $masjidId)
+            ->selectRaw('SUM(CASE WHEN jenis = "pemasukan" THEN nominal ELSE -nominal END) as total')
+            ->value('total') ?? 0;
+
+        $pemasukanBulanIni = Keuangan::where('masjid_id', $masjidId)
+            ->where('jenis', 'pemasukan')
+            ->whereMonth('tanggal', date('m'))
+            ->whereYear('tanggal', date('Y'))
+            ->sum('nominal');
+
+        $pengeluaranBulanIni = Keuangan::where('masjid_id', $masjidId)
+            ->where('jenis', 'pengeluaran')
+            ->whereMonth('tanggal', date('m'))
+            ->whereYear('tanggal', date('Y'))
+            ->sum('nominal');
+
+        return view('keuangan.index', compact('keuangans', 'totalSaldo', 'pemasukanBulanIni', 'pengeluaranBulanIni'));
     }
 
     public function create(Request $request)
@@ -38,6 +56,14 @@ class KeuanganController extends Controller
             'user_id' => auth()->id(),
         ]);
 
-        return redirect()->route('dashboard')->with('success', 'Transaksi berhasil ditambahkan');
+        return redirect()->route('keuangan.index')->with('success', 'Transaksi berhasil ditambahkan');
+    }
+
+    public function destroy(Keuangan $keuangan)
+    {
+        if ($keuangan->masjid_id === auth()->user()->masjid_id) {
+            $keuangan->delete();
+        }
+        return redirect()->back()->with('success', 'Transaksi berhasil dihapus');
     }
 }
