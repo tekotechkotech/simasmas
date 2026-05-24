@@ -256,6 +256,16 @@
                             <i class="fas fa-boxes"></i> Inventaris
                         </a>
                     </li>
+                    <li class="nav-item border-top mt-2 pt-2">
+                        <a class="nav-link {{ request()->routeIs('profil.*') ? 'active' : '' }}" href="{{ route('profil.edit') }}">
+                            <i class="fas fa-mosque"></i> Profil Masjid
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ request()->routeIs('laporan.*') ? 'active' : '' }}" href="{{ route('laporan.index') }}">
+                            <i class="fas fa-print"></i> Laporan Keuangan
+                        </a>
+                    </li>
                 </ul>
             </div>
 
@@ -333,7 +343,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Sidebar Toggle Logic for Mobile
-        document.addEventListener("DOMContentLoaded", f un ction () {
+        document.addEventListener("DOMContentLoad ed", f un ction () {
             const sidebar = document.getElementById('sidebar');
             const sidebarCollapse = document.getElementById('sidebarCollapse');
             const sidebarOverlay = document.getElementById('sidebarOverlay');
@@ -342,14 +352,14 @@
                 sidebar.classList.toggle('active');
                 sidebarOverlay.classList.toggle('active');
                 document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
-            }
+            } 
 
               if (sidebarCollapse) {
                 sidebarCollapse.addEventListener('click', toggleSidebar);
-            }
+             }
               if (sidebarOverlay) {
                 sidebarOverlay.addEventListener('click', toggleSidebar);
-            } });
+        } });
     </script>
     @stack('scripts')
 </body>

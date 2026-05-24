@@ -66,4 +66,32 @@ class KeuanganController extends Controller
         }
         return redirect()->back()->with('success', 'Transaksi berhasil dihapus');
     }
+
+    public function edit(Keuangan $keuangan)
+    {
+        if ($keuangan->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+        $jenis = $keuangan->jenis;
+        return view('keuangan.edit', compact('keuangan', 'jenis'));
+    }
+
+    public function update(Request $request, Keuangan $keuangan)
+    {
+        if ($keuangan->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+
+        $request->validate([
+            'nominal' => 'required|numeric|min:1',
+            'tanggal' => 'required|date',
+        ]);
+
+        $keuangan->update([
+            'nominal' => $request->nominal,
+            'kategori' => $request->kategori,
+            'keterangan' => $request->keterangan,
+            'tanggal' => $request->tanggal,
+        ]);
+
+        return redirect()->route('keuangan.index')->with('success', 'Transaksi berhasil diperbarui');
+    }
 }

@@ -57,4 +57,32 @@ class KegiatanController extends Controller
         }
         return redirect()->back()->with('success', 'Kegiatan berhasil dihapus');
     }
+
+    public function edit(Kegiatan $kegiatan)
+    {
+        if ($kegiatan->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+        return view('kegiatan.edit', compact('kegiatan'));
+    }
+
+    public function update(Request $request, Kegiatan $kegiatan)
+    {
+        if ($kegiatan->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+
+        $request->validate([
+            'judul' => 'required',
+            'tanggal' => 'required|date',
+        ]);
+
+        $kegiatan->update([
+            'judul' => $request->judul,
+            'deskripsi' => $request->deskripsi,
+            'tanggal' => $request->tanggal,
+            'waktu' => $request->waktu,
+            'lokasi' => $request->lokasi,
+        ]);
+
+        return redirect()->route('kegiatan.index')->with('success', 'Kegiatan berhasil diperbarui');
+    }
 }

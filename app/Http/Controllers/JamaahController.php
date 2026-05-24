@@ -45,4 +45,31 @@ class JamaahController extends Controller
         }
         return redirect()->back()->with('success', 'Data Jamaah dihapus');
     }
+
+    public function edit(Jamaah $jamaah)
+    {
+        if ($jamaah->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+        return view('jamaah.edit', compact('jamaah'));
+    }
+
+    public function update(Request $request, Jamaah $jamaah)
+    {
+        if ($jamaah->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+
+        $request->validate([
+            'nama' => 'required',
+        ]);
+
+        $jamaah->update([
+            'nama' => $request->nama,
+            'alamat' => $request->alamat,
+            'no_hp' => $request->no_hp,
+            'rt' => $request->rt,
+            'rw' => $request->rw,
+        ]);
+
+        return redirect()->route('jamaah.index')->with('success', 'Data Jamaah berhasil diperbarui');
+    }
 }

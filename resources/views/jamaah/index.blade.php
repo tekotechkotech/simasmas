@@ -34,6 +34,8 @@
                                     <td class="py-3">{{ $jamaah->alamat ?? '-' }}</td>
                                     <td class="py-3">{{ $jamaah->rt ?? '-' }} / {{ $jamaah->rw ?? '-' }}</td>
                                     <td class="px-4 py-3 text-end">
+                                        <a href="{{ route('jamaah.edit', $jamaah->id) }}"
+                                            class="btn btn-sm btn-light text-primary me-1"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('jamaah.destroy', $jamaah->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf

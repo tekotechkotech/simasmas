@@ -91,6 +91,8 @@
                                     </td>
                                     <td class="py-3">{{ $kegiatan->lokasi ?? '-' }}</td>
                                     <td class="px-4 py-3 text-end">
+                                        <a href="{{ route('kegiatan.edit', $kegiatan->id) }}"
+                                            class="btn btn-sm btn-light text-primary me-1"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('kegiatan.destroy', $kegiatan->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf

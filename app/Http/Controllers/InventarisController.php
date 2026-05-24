@@ -45,4 +45,31 @@ class InventarisController extends Controller
         }
         return redirect()->back()->with('success', 'Inventaris dihapus');
     }
+
+    public function edit(Inventaris $inventaris)
+    {
+        if ($inventaris->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+        return view('inventaris.edit', compact('inventaris'));
+    }
+
+    public function update(Request $request, Inventaris $inventaris)
+    {
+        if ($inventaris->masjid_id !== auth()->user()->masjid_id)
+            abort(403);
+
+        $request->validate([
+            'nama' => 'required',
+            'jumlah' => 'required|integer|min:1',
+            'kondisi' => 'required'
+        ]);
+
+        $inventaris->update([
+            'nama' => $request->nama,
+            'jumlah' => $request->jumlah,
+            'kondisi' => $request->kondisi,
+        ]);
+
+        return redirect()->route('inventaris.index')->with('success', 'Inventaris berhasil diperbarui');
+    }
 }

@@ -103,6 +103,7 @@
                                         {{ number_format($keuangan->nominal, 0, ',', '.') }}
                                     </td>
                                     <td class="px-4 py-3 text-end">
+                                        <a href="{{ route('keuangan.edit', $keuangan->id) }}" class="btn btn-sm btn-light text-primary me-1"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('keuangan.destroy', $keuangan->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf

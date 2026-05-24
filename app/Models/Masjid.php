@@ -6,8 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Masjid extends Model
 {
-    protected $fillable = ['name', 'alamat', 'logo'];
-
+    protected $fillable = ['name', 'alamat', 'logo', 'visi', 'misi', 'kontak'];
     public function users()
     {
         return $this->hasMany(User::class);

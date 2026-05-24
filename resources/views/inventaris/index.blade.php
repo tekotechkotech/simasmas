@@ -45,6 +45,8 @@
                                         @endif
                                     </td>
                                     <td class="px-4 py-3 text-end">
+                                        <a href="{{ route('inventaris.edit', $item->id) }}"
+                                            class="btn btn-sm btn-light text-primary me-1"><i class="fas fa-edit"></i></a>
                                         <form action="{{ route('inventaris.destroy', $item->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf

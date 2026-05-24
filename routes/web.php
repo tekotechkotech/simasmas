@@ -52,6 +52,12 @@ Route::middleware('auth')->group(function () {
     Route::resource('kegiatan', \App\Http\Controllers\KegiatanController::class);
     Route::resource('jamaah', \App\Http\Controllers\JamaahController::class);
     Route::resource('inventaris', \App\Http\Controllers\InventarisController::class);
+    Route::resource('laporan', \App\Http\Controllers\LaporanController::class);
+    Route::get('laporan/{laporan}/pdf', [\App\Http\Controllers\LaporanController::class, 'generatePdf'])->name('laporan.pdf');
+    Route::get('laporan/{laporan}/excel', [\App\Http\Controllers\LaporanController::class, 'generateExcel'])->name('laporan.excel');
+
+    Route::get('profil-masjid', [\App\Http\Controllers\MasjidController::class, 'edit'])->name('profil.edit');
+    Route::put('profil-masjid', [\App\Http\Controllers\MasjidController::class, 'update'])->name('profil.update');
 
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 });
